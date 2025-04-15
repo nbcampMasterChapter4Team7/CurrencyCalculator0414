@@ -13,32 +13,32 @@ class MainViewController: UIViewController {
             repository: CurrencyRepository(dataService: DataService())
         )
     )
-    
-    private let tableView = UITableView()
+    private var currencyTableView: CurrencyListView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setUpTableView()
+        view.backgroundColor = .white
+        setupTableView()
+        currencyTableView.configureDelegate(self)
         mainVM.onCurrencyDataChanged = { [weak self] in
             guard let self = self else { return }
             DispatchQueue.main.async {
-                self.tableView.reloadData()
+                self.currencyTableView.reloadData()
             }
         }
     }
     
-    func setUpTableView() {
-        view.addSubview(tableView)
-        tableView.translatesAutoresizingMaskIntoConstraints = false
+    func setupTableView(){
+        currencyTableView = CurrencyListView(frame: view.bounds)
+        view.addSubview(currencyTableView)
+        
+        currencyTableView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: view.topAnchor),
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            currencyTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            currencyTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            currencyTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            currencyTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
         ])
-        tableView.dataSource = self
-        tableView.delegate = self
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "CurrencyCell")
     }
 }
 
@@ -48,9 +48,9 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "CurrencyCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: CurrencyListViewCell.identifier, for: indexPath) as! CurrencyListViewCell
         let currency = mainVM.getCurrencyData()[indexPath.row]
-        cell.textLabel?.text = "\(currency.currencyCode)(\(currency.country)): \(currency.rate)"
+        cell.setupCurrencyInfo(currencyItem: currency)
         return cell
     }
     
