@@ -15,5 +15,6 @@ public class CachedCurrencyRate: NSManagedObject {
     public enum Key {
         static let currencyCode = "currencyCode"
         static let rate = "rate"
+        static let date = "date"
     }
 }

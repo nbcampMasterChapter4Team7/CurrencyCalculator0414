@@ -48,6 +48,7 @@ class MainViewModel {
 
     private func fetchCurrencyData() {
         currencyUseCase.execute { [weak self] result in
+            print(result)
             guard let self = self else { return }
             switch result {
             case .success(let rawData):
