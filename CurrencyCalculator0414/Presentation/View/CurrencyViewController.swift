@@ -9,6 +9,7 @@ import UIKit
 
 class CurrencyViewController: UIViewController {
     
+    private let currencyVM: CurrencyViewModel = CurrencyViewModel()
     var currency: CurrencyItem?
     
     private let stackView: UIStackView = {
@@ -41,6 +42,7 @@ class CurrencyViewController: UIViewController {
         let textField = UITextField()
         textField.placeholder = "금액을 입력하세요"
         textField.textAlignment = .center
+        textField.keyboardType = .numberPad
         textField.borderStyle = .roundedRect
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
@@ -70,6 +72,7 @@ class CurrencyViewController: UIViewController {
         navigationItem.title = "환율 계산기"
         setupStackView()
         setupConstraint()
+        button.addTarget(self, action: #selector(didTapCalculateButton), for: .touchUpInside)
     }
     
     func setupCurrencyCodeLabel() {
@@ -102,5 +105,16 @@ class CurrencyViewController: UIViewController {
             stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor,constant: 20),
             stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor,constant: -20)
         ])
+    }
+    
+    @objc private func didTapCalculateButton() {
+        guard let input = textField.text, !input.isEmpty,
+              let rate = currency?.rate,
+              let code = currency?.currencyCode else {
+            textLabel.text = "환율 정보가 부족합니다."
+            return
+        }
+        textLabel.text = currencyVM.calculateCurrency(input: input, rate: rate, currencyCode: code)
+        textField.text = ""
     }
 }
