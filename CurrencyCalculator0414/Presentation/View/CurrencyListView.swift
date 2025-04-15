@@ -10,8 +10,8 @@ import UIKit
 class CurrencyListView: UIView {
     private let tableView = UITableView()
 
-    override init(frame: CGRect){
-        super.init(frame: frame)
+    init(){
+        super.init(frame: .zero)
         setUpTableView()
     }
     

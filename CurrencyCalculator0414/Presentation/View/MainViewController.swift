@@ -13,14 +13,16 @@ class MainViewController: UIViewController {
             repository: CurrencyRepository(dataService: DataService())
         )
     )
-    private var currencyListView: CurrencyListView!
-    private var searchBar: UISearchBar!
+    private var currencyListView: CurrencyListView = CurrencyListView()
+    private var searchBar: UISearchBar = UISearchBar()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        setupTableView()
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationItem.title = "환율 정보"
         setupSearchBar()
+        setupTableView()
         currencyListView.configureDelegate(self)
         mainVM.onCurrencyDataChanged = { [weak self] in
             guard let self = self else { return }
@@ -31,24 +33,27 @@ class MainViewController: UIViewController {
     }
     
     func setupTableView(){
-        currencyListView = CurrencyListView(frame: view.bounds)
         view.addSubview(currencyListView)
-        
         currencyListView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            currencyListView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            currencyListView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            currencyListView.topAnchor.constraint(equalTo: searchBar.bottomAnchor),
             currencyListView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             currencyListView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            currencyListView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
     }
     
     private func setupSearchBar() {
-        searchBar = UISearchBar()
         searchBar.delegate = self
         searchBar.placeholder = "통화 검색"
         searchBar.backgroundImage = UIImage()
-        navigationItem.titleView = searchBar
+        searchBar.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(searchBar)
+        NSLayoutConstraint.activate([
+            searchBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            searchBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            searchBar.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+        ])
     }
 }
 
