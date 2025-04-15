@@ -13,7 +13,7 @@ class MainViewController: UIViewController {
             repository: CurrencyRepository(dataService: DataService())
         )
     )
-    private var currencyTableView: CurrencyListView!
+    private var currencyListView: CurrencyListView!
     private var searchBar: UISearchBar!
     
     override func viewDidLoad() {
@@ -21,25 +21,25 @@ class MainViewController: UIViewController {
         view.backgroundColor = .white
         setupTableView()
         setupSearchBar()
-        currencyTableView.configureDelegate(self)
+        currencyListView.configureDelegate(self)
         mainVM.onCurrencyDataChanged = { [weak self] in
             guard let self = self else { return }
             DispatchQueue.main.async {
-                self.currencyTableView.reloadData()
+                self.currencyListView.reloadData()
             }
         }
     }
     
     func setupTableView(){
-        currencyTableView = CurrencyListView(frame: view.bounds)
-        view.addSubview(currencyTableView)
+        currencyListView = CurrencyListView(frame: view.bounds)
+        view.addSubview(currencyListView)
         
-        currencyTableView.translatesAutoresizingMaskIntoConstraints = false
+        currencyListView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            currencyTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            currencyTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            currencyTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            currencyTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            currencyListView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            currencyListView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            currencyListView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            currencyListView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
         ])
     }
     
@@ -67,7 +67,9 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let currency = mainVM.getCurrencyData()[indexPath.row]
-        print(currency)
+        let currencyVC = CurrencyViewController()
+        currencyVC.currency = currency
+        navigationController?.pushViewController(currencyVC, animated: true)
     }
 }
 
