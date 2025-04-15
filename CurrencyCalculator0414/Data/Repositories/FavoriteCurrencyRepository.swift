@@ -7,7 +7,7 @@
 
 import CoreData
 
-final class FavoriteCurrencyRepository: FavoriteCurrencyRepositoryProtocol {
+class FavoriteCurrencyRepository: FavoriteCurrencyRepositoryProtocol {
     
     private let context = CoreDataManager.shared.context
     

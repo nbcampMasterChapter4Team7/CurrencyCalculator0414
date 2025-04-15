@@ -40,7 +40,7 @@ class DataService: DataServiceProtocol {
                         currencyCode: $0.key,
                         rate: $0.value,
                         country: CurrencyMapper.country(for: $0.key),
-                        isDown: false,
+                        isDown: .same,
                         isFavorite: false
                     )}
                     completion(.success(items))

@@ -46,7 +46,14 @@ class CurrencyListViewCell: UITableViewCell {
         rateLabel.font = .systemFont(ofSize: 16, weight: .medium)
         rateLabel.textColor = .black
         
-        arrowImageView.image = .init(systemName: currencyItem.isDown ? "arrowtriangle.down" : "arrowtriangle.up")
+        if currencyItem.isDown == .down {
+            arrowImageView.image = .init(systemName: "arrowtriangle.down")
+        } else if currencyItem.isDown == .up {
+            arrowImageView.image = .init(systemName: "arrowtriangle.up")
+        } else {
+            arrowImageView.image = .init(systemName: "arrowtriangle.up")
+            arrowImageView.tintColor = .clear
+        }
         
         favoriteImageView.image = .init(systemName: currencyItem.isFavorite ? "star.fill" : "star")
         favoriteImageView.tintColor = .systemYellow
@@ -60,17 +67,17 @@ class CurrencyListViewCell: UITableViewCell {
         favoriteImageView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            currencyCodeLabel.topAnchor.constraint(equalTo: topAnchor, constant: 10),
-            currencyCodeLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
+            currencyCodeLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),
+            currencyCodeLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
             currencyCodeLabel.bottomAnchor.constraint(equalTo: countryLabel.topAnchor, constant: -5),
-            countryLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
-            countryLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10),
-            rateLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
+            countryLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
+            countryLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10),
+            rateLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             rateLabel.trailingAnchor.constraint(equalTo: arrowImageView.leadingAnchor, constant: -5),
-            arrowImageView.centerYAnchor.constraint(equalTo: centerYAnchor),
+            arrowImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             arrowImageView.trailingAnchor.constraint(equalTo: favoriteImageView.leadingAnchor,constant: -10),
-            favoriteImageView.centerYAnchor.constraint(equalTo: centerYAnchor),
-            favoriteImageView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10)
+            favoriteImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            favoriteImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10)
         ])
     }
     

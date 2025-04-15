@@ -14,6 +14,9 @@ class MainViewController: UIViewController {
         ),
         favoriteUseCase: FavoriteCurrencyUseCase(
             repository: FavoriteCurrencyRepository()
+        ),
+        cachedCurrencyRateUseCase: CachedCurrencyRateUseCase(
+            repository: CachedCurrencyRateRepository()
         )
     )
     private var currencyListView: CurrencyListView = CurrencyListView()

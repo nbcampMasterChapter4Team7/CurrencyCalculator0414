@@ -6,6 +6,7 @@
 //
 
 class MainViewModel {
+    private let cachedCurrencyRateUseCase: CachedCurrencyRateUseCaseProtocol
     private let favoriteUseCase: FavoriteCurrencyUseCaseProtocol
     private let currencyUseCase: CurrencyUseCaseProtocol
 
@@ -18,9 +19,12 @@ class MainViewModel {
 
     var onCurrencyDataChanged: (() -> Void)?
 
-    init(currencyUseCase: CurrencyUseCaseProtocol, favoriteUseCase: FavoriteCurrencyUseCaseProtocol) {
+    init(currencyUseCase: CurrencyUseCaseProtocol,
+         favoriteUseCase: FavoriteCurrencyUseCaseProtocol,
+         cachedCurrencyRateUseCase: CachedCurrencyRateUseCaseProtocol) {
         self.currencyUseCase = currencyUseCase
         self.favoriteUseCase = favoriteUseCase
+        self.cachedCurrencyRateUseCase = cachedCurrencyRateUseCase
         fetchCurrencyData()
     }
 
@@ -44,11 +48,21 @@ class MainViewModel {
 
     private func fetchCurrencyData() {
         currencyUseCase.execute { [weak self] result in
+            guard let self = self else { return }
             switch result {
-            case .success(let data):
-                guard let self = self else { return }
-                self.allCurrencyData = data
-                self.currencyData = self.applyFavoriteAndSort(data)
+            case .success(let rawData):
+                let enrichedData = rawData.map { currency in
+                    let enriched = self.cachedCurrencyRateUseCase.convertToCurrencyItem(
+                        currencyCode: currency.currencyCode,
+                        rate: currency.rate,
+                        country: currency.country,
+                        isFavorite: currency.isFavorite
+                    )
+                    self.cachedCurrencyRateUseCase.updateCache(currencyCode: currency.currencyCode, rate: currency.rate)
+                    return enriched
+                }
+                self.allCurrencyData = enrichedData
+                self.currencyData = self.applyFavoriteAndSort(enrichedData)
             case .failure(let error):
                 print("Error: \(error)")
             }

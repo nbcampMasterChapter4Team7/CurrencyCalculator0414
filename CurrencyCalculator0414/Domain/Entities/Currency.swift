@@ -9,11 +9,15 @@ struct CurrencyResponse: Codable {
     let rates: [String: Double]
 }
 
+enum RateChangeDirection: String, Codable {
+    case up, down, same
+}
+
 struct CurrencyItem: Codable {
     let currencyCode: String
     let rate: Double
     let country: String
-    var isDown: Bool
+    var isDown: RateChangeDirection
     var isFavorite: Bool
 }
 
