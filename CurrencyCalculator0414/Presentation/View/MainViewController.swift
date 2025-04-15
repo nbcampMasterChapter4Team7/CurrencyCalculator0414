@@ -11,6 +11,9 @@ class MainViewController: UIViewController {
     private var mainVM = MainViewModel(
         currencyUseCase: CurrencyUseCase(
             repository: CurrencyRepository(dataService: DataService())
+        ),
+        favoriteUseCase: FavoriteCurrencyUseCase(
+            repository: FavoriteCurrencyRepository()
         )
     )
     private var currencyListView: CurrencyListView = CurrencyListView()
@@ -66,6 +69,10 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
         let cell = tableView.dequeueReusableCell(withIdentifier: CurrencyListViewCell.identifier, for: indexPath) as! CurrencyListViewCell
         let currency = mainVM.getCurrencyData()[indexPath.row]
         cell.setupCurrencyInfo(currencyItem: currency)
+        cell.onTapFavorite = { [weak self] in
+            self?.mainVM.toggleFavorite(for: currency.currencyCode)
+            tableView.reloadRows(at: [indexPath], with: .automatic)
+        }
         return cell
     }
     

@@ -8,7 +8,6 @@
 import UIKit
 
 class CurrencyViewController: UIViewController {
-    
     private let currencyVM: CurrencyViewModel = CurrencyViewModel()
     var currency: CurrencyItem?
     

@@ -10,6 +10,8 @@ import UIKit
 class CurrencyListViewCell: UITableViewCell {
     static let identifier = "CurrencyCell"
     
+    var onTapFavorite: (() -> Void)?
+    
     var currencyCodeLabel = UILabel()
     var countryLabel = UILabel()
     var rateLabel = UILabel()
@@ -18,12 +20,13 @@ class CurrencyListViewCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        addSubview(currencyCodeLabel)
-        addSubview(countryLabel)
-        addSubview(rateLabel)
-        addSubview(arrowImageView)
-        addSubview(favoriteImageView)
+        contentView.addSubview(currencyCodeLabel)
+        contentView.addSubview(countryLabel)
+        contentView.addSubview(rateLabel)
+        contentView.addSubview(arrowImageView)
+        contentView.addSubview(favoriteImageView)
         setupConstraints()
+        setupFavoriteTapGesture()
     }
     
     func toFourDecimalString(_ rate: Double) -> String {
@@ -69,6 +72,16 @@ class CurrencyListViewCell: UITableViewCell {
             favoriteImageView.centerYAnchor.constraint(equalTo: centerYAnchor),
             favoriteImageView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10)
         ])
+    }
+    
+    private func setupFavoriteTapGesture() {
+        favoriteImageView.isUserInteractionEnabled = true
+        let tap = UITapGestureRecognizer(target: self, action: #selector(favoriteTapped))
+        favoriteImageView.addGestureRecognizer(tap)
+    }
+
+    @objc private func favoriteTapped() {
+        onTapFavorite?()
     }
     
     required init?(coder: NSCoder) {
