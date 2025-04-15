@@ -73,6 +73,6 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
 
 extension MainViewController: UISearchBarDelegate {
     func searchBar(_: UISearchBar, textDidChange: String) {
-        print(textDidChange)
+        mainVM.searchCurrency(textDidChange)
     }
 }
