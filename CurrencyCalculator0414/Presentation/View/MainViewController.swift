@@ -14,11 +14,13 @@ class MainViewController: UIViewController {
         )
     )
     private var currencyTableView: CurrencyListView!
+    private var searchBar: UISearchBar!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         setupTableView()
+        setupSearchBar()
         currencyTableView.configureDelegate(self)
         mainVM.onCurrencyDataChanged = { [weak self] in
             guard let self = self else { return }
@@ -40,6 +42,14 @@ class MainViewController: UIViewController {
             currencyTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
         ])
     }
+    
+    private func setupSearchBar() {
+        searchBar = UISearchBar()
+        searchBar.delegate = self
+        searchBar.placeholder = "통화 검색"
+        searchBar.backgroundImage = UIImage()
+        navigationItem.titleView = searchBar
+    }
 }
 
 extension MainViewController: UITableViewDataSource, UITableViewDelegate {
@@ -58,5 +68,11 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
         tableView.deselectRow(at: indexPath, animated: true)
         let currency = mainVM.getCurrencyData()[indexPath.row]
         print(currency)
+    }
+}
+
+extension MainViewController: UISearchBarDelegate {
+    func searchBar(_: UISearchBar, textDidChange: String) {
+        print(textDidChange)
     }
 }
