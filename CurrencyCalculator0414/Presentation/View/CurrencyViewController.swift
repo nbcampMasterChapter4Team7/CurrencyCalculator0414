@@ -25,7 +25,7 @@ class CurrencyViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = .systemFont(ofSize: 18, weight: .bold)
-        label.textColor = .black
+        label.textColor = .label
         return label
     }()
     
@@ -33,7 +33,7 @@ class CurrencyViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = .systemFont(ofSize: 14, weight: .medium)
-        label.textColor = .gray
+        label.textColor = .secondaryLabel
         return label
     }()
     
@@ -66,7 +66,7 @@ class CurrencyViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = .systemBackground
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.title = "환율 계산기"
         setupStackView()

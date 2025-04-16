@@ -24,7 +24,7 @@ class MainViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = .systemBackground
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.title = "환율 정보"
         setupSearchBar()

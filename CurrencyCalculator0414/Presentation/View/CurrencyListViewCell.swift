@@ -36,15 +36,15 @@ class CurrencyListViewCell: UITableViewCell {
     func setupCurrencyInfo(currencyItem: CurrencyItem) {
         currencyCodeLabel.text = currencyItem.currencyCode
         currencyCodeLabel.font = .systemFont(ofSize: 18, weight: .bold)
-        currencyCodeLabel.textColor = .black
+        currencyCodeLabel.textColor = .label
         
         countryLabel.text = currencyItem.country
         countryLabel.font = .systemFont(ofSize: 14, weight: .light)
-        countryLabel.textColor = .gray
+        countryLabel.textColor = .secondaryLabel
         
         rateLabel.text = toFourDecimalString(currencyItem.rate)
         rateLabel.font = .systemFont(ofSize: 16, weight: .medium)
-        rateLabel.textColor = .black
+        rateLabel.textColor = .label
         
         switch currencyItem.isDown {
         case .up:
