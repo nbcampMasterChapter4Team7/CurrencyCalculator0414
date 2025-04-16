@@ -46,13 +46,19 @@ class CurrencyListViewCell: UITableViewCell {
         rateLabel.font = .systemFont(ofSize: 16, weight: .medium)
         rateLabel.textColor = .black
         
-        if currencyItem.isDown == .down {
-            arrowImageView.image = .init(systemName: "arrowtriangle.down")
-        } else if currencyItem.isDown == .up {
-            arrowImageView.image = .init(systemName: "arrowtriangle.up")
-        } else {
-            arrowImageView.image = .init(systemName: "arrowtriangle.up")
+        switch currencyItem.isDown {
+        case .up:
+            arrowImageView.image = UIImage(systemName: "arrowtriangle.up")
+            arrowImageView.tintColor = .systemRed
+            arrowImageView.isHidden = false
+        case .down:
+            arrowImageView.image = UIImage(systemName: "arrowtriangle.down")
+            arrowImageView.tintColor = .systemBlue
+            arrowImageView.isHidden = false
+        case .same:
+            arrowImageView.image = UIImage(systemName: "arrowtriangle.up")
             arrowImageView.tintColor = .clear
+            arrowImageView.isHidden = false
         }
         
         favoriteImageView.image = .init(systemName: currencyItem.isFavorite ? "star.fill" : "star")

@@ -48,22 +48,28 @@ class MainViewModel {
 
     private func fetchCurrencyData() {
         currencyUseCase.execute { [weak self] result in
-            print(result)
             guard let self = self else { return }
             switch result {
             case .success(let rawData):
                 let enrichedData = rawData.map { currency in
-                    let enriched = self.cachedCurrencyRateUseCase.convertToCurrencyItem(
+                    let direction = self.cachedCurrencyRateUseCase.evaluateChange(for: currency.currencyCode, newRate: currency.rate)
+
+                    let item = self.cachedCurrencyRateUseCase.convertToCurrencyItem(
                         currencyCode: currency.currencyCode,
                         rate: currency.rate,
                         country: currency.country,
-                        isFavorite: currency.isFavorite
+                        isFavorite: currency.isFavorite,
+                        direction: direction
                     )
+
                     self.cachedCurrencyRateUseCase.updateCache(currencyCode: currency.currencyCode, rate: currency.rate)
-                    return enriched
+
+                    return item
                 }
+
                 self.allCurrencyData = enrichedData
                 self.currencyData = self.applyFavoriteAndSort(enrichedData)
+
             case .failure(let error):
                 print("Error: \(error)")
             }

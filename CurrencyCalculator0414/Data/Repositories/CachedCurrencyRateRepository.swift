@@ -31,24 +31,28 @@ class CachedCurrencyRateRepository: CachedCurrencyRateRepositoryProtocol {
         }
     }
     
-    func saveRate(_ rate: Double, for currencyCode: String) {
-        let today = Calendar.current.startOfDay(for: Date())
+    func saveRate(_ rate: Double, for currencyCode: String, on date: Date) {
+        print("✅")
+        let startOfDay = Calendar.current.startOfDay(for: date)
         
         let request: NSFetchRequest<CachedCurrencyRate> = CachedCurrencyRate.fetchRequest()
         request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
             NSPredicate(format: "currencyCode == %@", currencyCode),
-            NSPredicate(format: "date == %@", today as NSDate)
+            NSPredicate(format: "date == %@", startOfDay as NSDate)
         ])
         request.fetchLimit = 1
         
         do {
             if let existing = try context.fetch(request).first {
+                if abs(existing.rate - rate) < 0.000001 {
+                    return
+                }
                 existing.rate = rate
             } else {
                 let entity = CachedCurrencyRate(context: context)
                 entity.currencyCode = currencyCode
                 entity.rate = rate
-                entity.date = today
+                entity.date = startOfDay
             }
             try context.save()
         } catch {

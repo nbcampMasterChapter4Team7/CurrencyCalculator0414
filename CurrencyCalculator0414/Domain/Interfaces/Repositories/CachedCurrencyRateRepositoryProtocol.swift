@@ -9,6 +9,6 @@ import Foundation
 
 protocol CachedCurrencyRateRepositoryProtocol {
     func fetchRate(for currencyCode: String, on date: Date) -> Double?
-    func saveRate(_ rate: Double, for currencyCode: String)
+    func saveRate(_ rate: Double, for currencyCode: String, on date: Date)
     func compareWithPreviousRate(_ newRate: Double, for currencyCode: String) -> RateChangeDirection
 }
