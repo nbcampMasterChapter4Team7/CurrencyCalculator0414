@@ -10,6 +10,93 @@
 - 다크모드
 - 코어 데이터를 이용해 즐겨찾기 저장, 마지막 페이지 저장 
 
+# 프로젝트 구조
+```
+├── CurrencyCalculator0414
+│   ├── Base.lproj
+│   ├── Data
+│   │   ├── Network
+│   │   │   ├── DataMapping
+│   │   │   │   └── CurrencyMapper.swift
+│   │   │   └── DataService.swift
+│   │   ├── PersistantStorages
+│   │   │   ├── CachedCurrencyRate+CoreDataClass.swift
+│   │   │   ├── CachedCurrencyRate+CoreDataProperties.swift
+│   │   │   ├── CoreDataManager.swift
+│   │   │   ├── FavoriteCurrency+CoreDataClass.swift
+│   │   │   ├── FavoriteCurrency+CoreDataProperties.swift
+│   │   │   ├── LastViewedScreen+CoreDataClass.swift
+│   │   │   └── LastViewedScreen+CoreDataProperties.swift
+│   │   └── Repositories
+│   │       ├── CachedCurrencyRateRepository.swift
+│   │       ├── CurrencyRepository.swift
+│   │       ├── FavoriteCurrencyRepository.swift
+│   │       └── LastViewedScreenRepository.swift
+│   ├── Domain
+│   │   ├── Entities
+│   │   │   └── Currency.swift
+│   │   ├── Interfaces
+│   │   │   ├── Network
+│   │   │   │   └── DataServiceProtocol.swift
+│   │   │   └── Repositories
+│   │   │       ├── CachedCurrencyRateRepositoryProtocol.swift
+│   │   │       ├── CurrencyRepositoryProtocol.swift
+│   │   │       ├── FavoriteCurrencyRepositoryProtocol.swift
+│   │   │       └── LastViewedScreenRepositoryProtocol.swift
+│   │   └── UseCases
+│   │       ├── CachedCurrencyRateUseCase.swift
+│   │       ├── CurrencyUseCase.swift
+│   │       ├── FavoriteCurrencyUseCase.swift
+│   │       └── LastViewedScreenUseCase.swift
+│   ├── Info.plist
+│   ├── Presentation
+│   │   ├── View
+│   │   │   ├── CurrencyListView.swift
+│   │   │   ├── CurrencyListViewCell.swift
+│   │   │   ├── CurrencyViewController.swift
+│   │   │   └── MainViewController.swift
+│   │   └── ViewModel
+│   │       ├── CurrencyViewModel.swift
+│   │       └── MainViewModel.swift
+│   └── Support
+│       ├── AppDelegate.swift
+│       ├── Assets.xcassets
+│       │   ├── AccentColor.colorset
+│       │   │   └── Contents.json
+│       │   ├── AppIcon.appiconset
+│       │   │   └── Contents.json
+│       │   └── Contents.json
+│       ├── Base.lproj
+│       │   └── LaunchScreen.storyboard
+│       ├── CurrencyCalculator0414.xcdatamodeld
+│       │   └── CurrencyCalculator0414.xcdatamodel
+│       │       └── contents
+│       └── SceneDelegate.swift
+├── CurrencyCalculator0414.xcodeproj
+│   ├── project.pbxproj
+│   ├── project.xcworkspace
+│   │   ├── contents.xcworkspacedata
+│   │   ├── xcshareddata
+│   │   │   └── swiftpm
+│   │   │       └── configuration
+│   │   └── xcuserdata
+│   │       └── tlswo.xcuserdatad
+│   │           └── UserInterfaceState.xcuserstate
+│   ├── xcshareddata
+│   │   └── xcschemes
+│   │       └── CurrencyCalculator0414.xcscheme
+│   └── xcuserdata
+│       └── tlswo.xcuserdatad
+│           └── xcschemes
+│               └── xcschememanagement.plist
+├── CurrencyCalculator0414Tests
+│   └── CurrencyCalculator0414Tests.swift
+├── CurrencyCalculator0414UITests
+│   ├── CurrencyCalculator0414UITests.swift
+│   └── CurrencyCalculator0414UITestsLaunchTests.swift
+└── README.md
+```
+
 # 시연 영상 
 https://github.com/user-attachments/assets/9e1c669e-6656-4da8-86db-551b4082710b
 
