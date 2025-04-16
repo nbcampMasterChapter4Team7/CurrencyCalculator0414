@@ -14,9 +14,22 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = scene as? UIWindowScene else { return }
-                
+
+        let repository = LastViewedScreenRepository()
+        let useCase = LastViewedScreenUseCase(repository: repository)
+        let result = useCase.get()
+
+        let mainVC = MainViewController()
+        let navigationController = UINavigationController(rootViewController: mainVC)
+
+        if result.screenName == "CurrencyCalculatePage", let currency = result.currency {
+            let currencyVC = CurrencyViewController()
+            currencyVC.currency = currency
+            navigationController.pushViewController(currencyVC, animated: false)
+        }
+
         self.window = UIWindow(windowScene: windowScene)
-        self.window?.rootViewController = UINavigationController(rootViewController: MainViewController())
+        self.window?.rootViewController = navigationController
         self.window?.makeKeyAndVisible()
     }
 

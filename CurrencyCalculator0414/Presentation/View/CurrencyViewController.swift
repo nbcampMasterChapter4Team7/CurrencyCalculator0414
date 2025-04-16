@@ -74,6 +74,15 @@ class CurrencyViewController: UIViewController {
         button.addTarget(self, action: #selector(didTapCalculateButton), for: .touchUpInside)
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        let repository = LastViewedScreenRepository()
+        let useCase = LastViewedScreenUseCase(repository: repository)
+
+        useCase.save(screenName: "CurrencyCalculatePage", currency: currency)
+    }
+    
     func setupCurrencyCodeLabel() {
         currencyCodeLabel.text = currency?.currencyCode
     }

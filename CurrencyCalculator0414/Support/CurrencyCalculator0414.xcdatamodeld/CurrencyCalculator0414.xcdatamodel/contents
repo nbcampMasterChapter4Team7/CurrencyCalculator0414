@@ -9,4 +9,10 @@
         <attribute name="currencyCode" optional="YES" attributeType="String"/>
         <attribute name="isFavorite" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
     </entity>
+    <entity name="LastViewedScreen" representedClassName="LastViewedScreen" syncable="YES">
+        <attribute name="country" optional="YES" attributeType="String"/>
+        <attribute name="currencyCode" optional="YES" attributeType="String"/>
+        <attribute name="rate" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="screenName" optional="YES" attributeType="String"/>
+    </entity>
 </model>

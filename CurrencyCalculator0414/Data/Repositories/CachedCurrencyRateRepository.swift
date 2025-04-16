@@ -32,7 +32,6 @@ class CachedCurrencyRateRepository: CachedCurrencyRateRepositoryProtocol {
     }
     
     func saveRate(_ rate: Double, for currencyCode: String, on date: Date) {
-        print("✅")
         let startOfDay = Calendar.current.startOfDay(for: date)
         
         let request: NSFetchRequest<CachedCurrencyRate> = CachedCurrencyRate.fetchRequest()

@@ -38,6 +38,15 @@ class MainViewController: UIViewController {
         }
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        let repository = LastViewedScreenRepository()
+        let useCase = LastViewedScreenUseCase(repository: repository)
+
+        useCase.save(screenName: "MainPage")
+    }
+    
     func setupTableView(){
         view.addSubview(currencyListView)
         currencyListView.translatesAutoresizingMaskIntoConstraints = false
