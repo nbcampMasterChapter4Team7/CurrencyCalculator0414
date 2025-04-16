@@ -119,10 +119,16 @@ class CurrencyViewController: UIViewController {
         guard let input = textField.text, !input.isEmpty,
               let rate = currency?.rate,
               let code = currency?.currencyCode else {
-            textLabel.text = "환율 정보가 부족합니다."
             return
         }
-        textLabel.text = currencyVM.calculateCurrency(input: input, rate: rate, currencyCode: code)
+        guard let inputValue = Double(input) else {
+            let alert = UIAlertController(title: "오류", message: "숫자를 입력해 주세요.", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
+            present(alert, animated: true, completion: nil)
+            textField.text = ""
+            return
+        }
+        textLabel.text = currencyVM.calculateCurrency(input: inputValue, rate: rate, currencyCode: code)
         textField.text = ""
     }
 }

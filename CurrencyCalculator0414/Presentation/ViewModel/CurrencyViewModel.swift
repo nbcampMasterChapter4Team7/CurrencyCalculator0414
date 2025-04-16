@@ -6,8 +6,8 @@
 //
 
 class CurrencyViewModel {
-    func calculateCurrency(input: String,rate: Double,currencyCode: String) -> String {
-        let inputAmount = Double(input)!
+    func calculateCurrency(input: Double,rate: Double,currencyCode: String) -> String {
+        let inputAmount = input
         let result = inputAmount * rate
         let formattedResult = String(format: "%.2f", result)
         return "\(inputAmount) USD → \(formattedResult) \(currencyCode)"
