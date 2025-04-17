@@ -8,7 +8,11 @@
 import UIKit
 
 class CurrencyViewController: UIViewController {
-    private let currencyVM: CurrencyViewModel = CurrencyViewModel()
+    private let currencyVM: CurrencyViewModel = CurrencyViewModel(
+        lastViewedScreenUseCase: LastViewedScreenUseCase(
+            repository: LastViewedScreenRepository()
+        )
+    )
     var currency: CurrencyItem?
     
     private let stackView: UIStackView = {
@@ -76,11 +80,8 @@ class CurrencyViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-
-        let repository = LastViewedScreenRepository()
-        let useCase = LastViewedScreenUseCase(repository: repository)
-
-        useCase.save(screenName: "CurrencyCalculatePage", currency: currency)
+        guard let currency = currency else { return }
+        currencyVM.recordLastVisited(with: currency)
     }
     
     func setupCurrencyCodeLabel() {

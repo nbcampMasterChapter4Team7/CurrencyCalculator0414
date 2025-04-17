@@ -9,6 +9,7 @@ class MainViewModel {
     private let cachedCurrencyRateUseCase: CachedCurrencyRateUseCaseProtocol
     private let favoriteUseCase: FavoriteCurrencyUseCaseProtocol
     private let currencyUseCase: CurrencyUseCaseProtocol
+    private let lastViewedScreenUseCase: LastViewedScreenUseCaseProtocol
 
     private var allCurrencyData: [CurrencyItem] = []
     private var currencyData: [CurrencyItem] = [] {
@@ -21,10 +22,12 @@ class MainViewModel {
 
     init(currencyUseCase: CurrencyUseCaseProtocol,
          favoriteUseCase: FavoriteCurrencyUseCaseProtocol,
-         cachedCurrencyRateUseCase: CachedCurrencyRateUseCaseProtocol) {
+         cachedCurrencyRateUseCase: CachedCurrencyRateUseCaseProtocol,
+         lastViewedScreenUseCase: LastViewedScreenUseCaseProtocol) {
         self.currencyUseCase = currencyUseCase
         self.favoriteUseCase = favoriteUseCase
         self.cachedCurrencyRateUseCase = cachedCurrencyRateUseCase
+        self.lastViewedScreenUseCase = lastViewedScreenUseCase
         fetchCurrencyData()
     }
 
@@ -98,5 +101,9 @@ class MainViewModel {
     func toggleFavorite(for currencyCode: String) {
         favoriteUseCase.toggleFavorite(code: currencyCode)
         currencyData = applyFavoriteAndSort(currencyData)
+    }
+    
+    func recordLastVisited(with currency: CurrencyItem?) {
+        lastViewedScreenUseCase.save(screenName: "MainPage", currency: currency)
     }
 }

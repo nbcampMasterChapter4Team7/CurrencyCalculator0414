@@ -17,6 +17,9 @@ class MainViewController: UIViewController {
         ),
         cachedCurrencyRateUseCase: CachedCurrencyRateUseCase(
             repository: CachedCurrencyRateRepository()
+        ),
+        lastViewedScreenUseCase: LastViewedScreenUseCase(
+            repository: LastViewedScreenRepository()
         )
     )
     private var currencyListView: CurrencyListView = CurrencyListView()
@@ -40,11 +43,7 @@ class MainViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-
-        let repository = LastViewedScreenRepository()
-        let useCase = LastViewedScreenUseCase(repository: repository)
-
-        useCase.save(screenName: "MainPage")
+        mainVM.recordLastVisited(with: nil)
     }
     
     func setupTableView(){

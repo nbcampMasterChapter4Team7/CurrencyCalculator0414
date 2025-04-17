@@ -5,7 +5,12 @@
 //  Created by tlswo on 4/16/25.
 //
 
-class LastViewedScreenUseCase {
+protocol LastViewedScreenUseCaseProtocol {
+    func save(screenName: String, currency: CurrencyItem?)
+    func get() -> (screenName: String?, currency: CurrencyItem?)
+}
+
+class LastViewedScreenUseCase: LastViewedScreenUseCaseProtocol {
     private let repository: LastViewedScreenRepositoryProtocol
 
     init(repository: LastViewedScreenRepositoryProtocol) {
