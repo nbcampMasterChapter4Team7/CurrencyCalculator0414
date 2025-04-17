@@ -5,6 +5,8 @@
 //  Created by tlswo on 4/14/25.
 //
 
+import Foundation
+
 class MainViewModel {
     private let cachedCurrencyRateUseCase: CachedCurrencyRateUseCaseProtocol
     private let favoriteUseCase: FavoriteCurrencyUseCaseProtocol
@@ -65,7 +67,10 @@ class MainViewModel {
                         direction: direction
                     )
 
-                    self.cachedCurrencyRateUseCase.updateCache(currencyCode: currency.currencyCode, rate: currency.rate)
+                    self.cachedCurrencyRateUseCase.updateCache(
+                        currencyCode: currency.currencyCode,
+                        rate: currency.rate
+                    )
 
                     return item
                 }

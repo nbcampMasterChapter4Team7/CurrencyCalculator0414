@@ -60,11 +60,12 @@ class CachedCurrencyRateRepository: CachedCurrencyRateRepositoryProtocol {
     }
     
     func compareWithPreviousRate(_ newRate: Double, for currencyCode: String) -> RateChangeDirection {
-        guard let yesterday = Calendar.current.date(byAdding: .day, value: -1, to: Date()),
+        let calendar = Calendar.current
+        let today = calendar.startOfDay(for: Date())
+        guard let yesterday = calendar.date(byAdding: .day, value: -1, to: today),
               let previousRate = fetchRate(for: currencyCode, on: yesterday) else {
             return .same
         }
-
         if abs(newRate - previousRate) > 0.01 {
             return newRate > previousRate ? .up : .down
         } else {
