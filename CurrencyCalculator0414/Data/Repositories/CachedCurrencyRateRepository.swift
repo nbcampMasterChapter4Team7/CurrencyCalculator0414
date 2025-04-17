@@ -8,7 +8,11 @@
 import CoreData
 
 class CachedCurrencyRateRepository: CachedCurrencyRateRepositoryProtocol {
-    private let context = CoreDataManager.shared.context
+    private let context: NSManagedObjectContext
+
+    init(context: NSManagedObjectContext = CoreDataManager.shared.context) {
+        self.context = context
+    }
     
     func fetchRate(for currencyCode: String, on date: Date) -> Double? {
         let request: NSFetchRequest<CachedCurrencyRate> = CachedCurrencyRate.fetchRequest()
