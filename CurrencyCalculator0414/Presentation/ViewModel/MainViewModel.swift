@@ -57,22 +57,20 @@ class MainViewModel {
             switch result {
             case .success(let rawData):
                 let enrichedData = rawData.map { currency in
+                    self.cachedCurrencyRateUseCase.updateCache(
+                        currencyCode: currency.currencyCode,
+                        rate: currency.rate
+                    )
+                    
                     let direction = self.cachedCurrencyRateUseCase.evaluateChange(for: currency.currencyCode, newRate: currency.rate)
 
-                    let item = self.cachedCurrencyRateUseCase.convertToCurrencyItem(
+                    return self.cachedCurrencyRateUseCase.convertToCurrencyItem(
                         currencyCode: currency.currencyCode,
                         rate: currency.rate,
                         country: currency.country,
                         isFavorite: currency.isFavorite,
                         direction: direction
                     )
-
-                    self.cachedCurrencyRateUseCase.updateCache(
-                        currencyCode: currency.currencyCode,
-                        rate: currency.rate
-                    )
-
-                    return item
                 }
 
                 self.allCurrencyData = enrichedData

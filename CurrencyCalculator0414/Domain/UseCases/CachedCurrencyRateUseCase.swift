@@ -27,10 +27,6 @@ class CachedCurrencyRateUseCase: CachedCurrencyRateUseCaseProtocol {
     
     func updateCache(currencyCode: String, rate: Double) {
         let today = Calendar.current.startOfDay(for: Date())
-        if let existing = repository.fetchRate(for: currencyCode, on: today),
-           abs(existing - rate) < 0.000001 {
-            return
-        }
         repository.saveRate(rate, for: currencyCode, on: today)
     }
     

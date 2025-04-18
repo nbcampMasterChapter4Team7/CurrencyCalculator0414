@@ -19,7 +19,9 @@ class CachedCurrencyRateRepository: CachedCurrencyRateRepositoryProtocol {
         
         let calendar = Calendar.current
         let startOfDay = calendar.startOfDay(for: date)
-        let endOfDay = calendar.date(byAdding: .day, value: 1, to: startOfDay)!
+        guard let endOfDay = calendar.date(byAdding: .day, value: 1, to: startOfDay) else {
+            return nil
+        }
         
         request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
             NSPredicate(format: "currencyCode == %@", currencyCode),
@@ -66,10 +68,16 @@ class CachedCurrencyRateRepository: CachedCurrencyRateRepositoryProtocol {
     func compareWithPreviousRate(_ newRate: Double, for currencyCode: String) -> RateChangeDirection {
         let calendar = Calendar.current
         let today = calendar.startOfDay(for: Date())
-        guard let yesterday = calendar.date(byAdding: .day, value: -1, to: today),
-              let previousRate = fetchRate(for: currencyCode, on: yesterday) else {
+        guard let yesterdayDate = calendar.date(byAdding: .day, value: -1, to: today) else {
             return .same
         }
+        let yesterday = calendar.startOfDay(for: yesterdayDate)
+        
+        guard let previousRate = fetchRate(for: currencyCode, on: yesterday) else {
+            print("이전 환율 없음")
+            return .same
+        }
+                                
         if abs(newRate - previousRate) > 0.01 {
             return newRate > previousRate ? .up : .down
         } else {
