@@ -11,10 +11,10 @@ import UIKit
 class LastViewedScreenRepository: LastViewedScreenRepositoryProtocol {
     private let context: NSManagedObjectContext
 
-    init(context: NSManagedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext) {
+    init(context: NSManagedObjectContext = CoreDataManager.shared.context) {
         self.context = context
     }
-
+    
     func save(screenName: String, currency: CurrencyItem?) {
         deleteExisting()
 

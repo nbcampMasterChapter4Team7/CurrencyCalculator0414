@@ -38,30 +38,32 @@ class CachedCurrencyRateRepository: CachedCurrencyRateRepositoryProtocol {
     }
     
     func saveRate(_ rate: Double, for currencyCode: String, on date: Date) {
-        let startOfDay = Calendar.current.startOfDay(for: date)
-        
-        let request: NSFetchRequest<CachedCurrencyRate> = CachedCurrencyRate.fetchRequest()
-        request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
-            NSPredicate(format: "currencyCode == %@", currencyCode),
-            NSPredicate(format: "date == %@", startOfDay as NSDate)
-        ])
-        request.fetchLimit = 1
-        
-        do {
-            if let existing = try context.fetch(request).first {
-                if abs(existing.rate - rate) < 0.000001 {
-                    return
+        context.perform {
+            let startOfDay = Calendar.current.startOfDay(for: date)
+            
+            let request: NSFetchRequest<CachedCurrencyRate> = CachedCurrencyRate.fetchRequest()
+            request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
+                NSPredicate(format: "currencyCode == %@", currencyCode),
+                NSPredicate(format: "date == %@", startOfDay as NSDate)
+            ])
+            request.fetchLimit = 1
+            
+            do {
+                if let existing = try self.context.fetch(request).first {
+                    if abs(existing.rate - rate) < 0.000001 {
+                        return
+                    }
+                    existing.rate = rate
+                } else {
+                    let entity = CachedCurrencyRate(context: self.context)
+                    entity.currencyCode = currencyCode
+                    entity.rate = rate
+                    entity.date = startOfDay
                 }
-                existing.rate = rate
-            } else {
-                let entity = CachedCurrencyRate(context: context)
-                entity.currencyCode = currencyCode
-                entity.rate = rate
-                entity.date = startOfDay
+                try self.context.save()
+            } catch {
+                print("[CoreData] Save 실패: \(error)")
             }
-            try context.save()
-        } catch {
-            print("[CoreData] Save 실패: \(error)")
         }
     }
     
